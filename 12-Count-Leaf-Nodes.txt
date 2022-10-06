@@ -1,0 +1,194 @@
+#includeiostream
+#includevector
+#includequeue
+using namespace std;
+
+templatetypename T
+class TreeNode{
+   public
+       T data;
+       vectorTreeNodeT children;
+       TreeNode(T data){
+          this-data = data;
+       }
+};
+
+void printTree(TreeNodeint root){
+   if(root==NULL){
+    return ;
+   }
+   coutroot-data ;
+   for(int i=0;iroot-children.size();i++){
+    coutroot-children[i]-data ,;
+   }
+   coutendl;
+
+   for(int i=0;iroot-children.size();i++){
+    printTree(root-children[i]);
+   }
+}
+
+TreeNodeint takeInput(){
+   int rootData;
+   coutEnter dataendl;
+   cinrootData;
+   TreeNodeint root = new TreeNodeint(rootData);
+    how many children
+   int n;
+   coutEnter num of children of rootDataendl;
+   cinn;
+
+   for(int i=1;i=n;i++){
+     TreeNodeint child = takeInput();
+     root-children.push_back(child);
+   }
+   return root;
+}
+
+TreeNodeint takeInputLevelWise(){
+    int rootData;
+    coutEnter root dataendl;
+    cinrootData;
+    TreeNodeint root = new TreeNodeint(rootData);
+    queueTreeNodeint q;
+    q.push(root);
+
+    while(!q.empty()){
+        TreeNodeint f = q.front();
+        q.pop();
+
+        coutEnter no of children of f-dataendl;
+        int n;
+        cinn;
+
+        for(int i=1;i=n;i++){
+            int childData;
+            coutEnter i th child of f-dataendl;
+            cinchildData;
+
+            TreeNodeint child = new TreeNodeint(childData);
+            q.push(child);
+            f-children.push_back(child);
+        }
+    }
+    return root;
+}
+
+void printTreeLevelWise(TreeNodeint root){
+     queueTreeNodeint q;
+     q.push(root);
+     while(!q.empty()){
+        TreeNodeint f = q.front();
+        q.pop();
+
+        coutf-data ;
+        for(int i=0;if-children.size();i++){
+           coutf-children[i]-data ,;
+         }
+        coutendl;
+
+        for(int i=0;if-children.size();i++){
+            q.push(f-children[i]);
+        }
+     }
+}
+
+int countNodes(TreeNodeint root){
+    if(root==NULL){   edge case
+        return 0;
+    }
+    int ans = 1;
+    for(int i=0;iroot-children.size();i++){
+        ans += countNodes(root-children[i]);
+    }
+    return ans;
+}
+
+int height(TreeNodeint root){
+     if(root==NULL){   edge case
+        return 0;
+    }
+   int mx = 0;    maximum height
+   for(int i=0;iroot-children.size();i++){
+     int childHeight = height(root-children[i]);
+     if(childHeight  mx){
+        mx = childHeight;
+     }
+     mx = max(mx, height(root-children[i]));
+   }
+   return mx + 1;
+}
+
+void printAtLevelK(TreeNodeint root, int k){
+    if(root==NULL){   edge case
+        return ;
+    }
+     if(k==0){
+        coutroot-dataendl;
+        return;
+     }
+     for(int i=0;iroot-children.size();i++){
+        printAtLevelK(root-children[i], k-1);
+     }
+}
+
+void printAtLevelKOtherWay(TreeNodeint root, int k,int c=0){
+    if(root==NULL){   edge case
+        return ;
+    }
+     if(k==c){
+        coutroot-dataendl;
+        return;
+     }
+     for(int i=0;iroot-children.size();i++){
+        printAtLevelKOtherWay(root-children[i], k,c+1);
+     }
+}
+
+int countLeafNodes(TreeNodeint root){
+    if(root==NULL){   edge case
+        return 0;
+      }
+      if(root-children.size()==0){
+        return 1;
+      }
+      int ans = 0;
+      for(int i=0;iroot-children.size();i++){
+       ans +=  countLeafNodes(root-children[i]);
+      }
+      return ans;
+}
+void countLeafNodesOtherWay(TreeNodeint root, int &ans){
+    if(root==NULL){   edge case
+        return ;
+    }
+      if(root-children.size()==0){
+         ans++;
+         return;
+      }
+      for(int i=0;iroot-children.size();i++){
+         countLeafNodesOtherWay(root-children[i],ans);
+      }
+}
+ 1 3 2 3 4 2 5 6 2 7 8 0 0 0 0 1 9 0
+int main(){
+  TreeNodeint root = new TreeNodeint(1);
+  TreeNodeint n1 = new TreeNodeint(2);
+  TreeNodeint n2 = new TreeNodeint(3);
+
+  root-children.push_back(n1);
+  root-children.push_back(n2);
+
+  TreeNodeint root = takeInputLevelWise();
+  printTreeLevelWise(root);
+  coutTotal nodes countNodes(root)endl;
+  coutHeight height(root)endl;
+  coutNodes at level 2endl;
+  printAtLevelK(root,2);
+  printAtLevelKOtherWay(root,2);
+  cout No of leaf nodes countLeafNodes(root)endl;
+  int totalLeafNodes = 0;
+  countLeafNodesOtherWay(root,totalLeafNodes);
+  cout No of leaf nodes other way totalLeafNodesendl;
+  return 0;
+}
